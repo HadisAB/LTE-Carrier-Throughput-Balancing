@@ -2,7 +2,9 @@
 Finding the candidates of LTE throughput balancing based on carriers per LTE sites.
 
 ## Goal
-If you are working with a LTE wireless communication netweork, you might face different items to be chosen as a metric for balancing the carriers load of one site.
+Sometimes you will see huge gap in the performance of different cells in a sector of LTE sites. 
+It is too time-consuming for optimizer to find these cells one by one. So, the optimizer should check all cells with their different features to make sector balanced.<br />
+In this project we are going to find such cells automatically and share candidates with optimization engineer to accelerate the job. You also might face different items to be chosen as a metric for balancing the carriers load of one site.<br />
 
 Main LTE KPI candidates to balance carriers situation in a site are:
 
