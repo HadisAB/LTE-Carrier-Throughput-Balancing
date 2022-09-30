@@ -27,7 +27,7 @@ References:
  - *[H. Abarghouyi, S. M. Razavizadeh and E. Björnson, "QoE-Aware Beamforming Design for Massive MIMO Heterogeneous Networks," in IEEE Transactions on Vehicular Technology, vol. 67, no. 9, pp. 8315-8323, Sept. 2018, doi: 10.1109/TVT.2018.2843355.](https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=QoE-Aware%20Beamforming%20Design%20for%20Massive%20MIMO%20Heterogeneous%20Networks&newsearch=true&type=alt1)*
 
 
-## QoE and Throughput Relation (web service)
+### QoE and Throughput Relation (web service) ###
 𝑀𝑂𝑆<sub>𝑤𝑒𝑏</sub>  represents the user perceived quality expressed in real numbers ranging from 1 to 5 (i.e., the score 1 represents “extremely low quality” whereas score 5 represents “excellent quality”).<br />
 
 𝑀𝑂𝑆<sub>𝑤𝑒𝑏</sub>=−𝐾<sub>1</sub>ln⁡(𝑑(𝑅<sub>𝑤𝑒𝑏</sub> ))+𝐾<sub>2</sub> <br />
@@ -55,44 +55,28 @@ In above example there were 12% improvement.
 <img src=https://github.com/HadisAB/LTE-Carrier-Throughput-Balancing/blob/main/MOS_Example.png/>
 
  <br /> <br />
- ## Python Programe of Project
+ ## Innovated Method
 Based on different investigations, we have provided a method to select all cells which are not balanced (through the throughput point of view) in our network to increase our users’ experience.  Below are the list of criteria in our method. 
 
-Criteria *:
-- The hourly data for 24hours has been considered.
-- The three cells of each sector(L1800 , L2600_1 and L2100) has been considered.
-- The unbalanced cases are the ones with below criteria for at least 70% of our hourly data :
- Thp_good_cell: consider we are going to check throughput balancing between two cells, the ones with better throughput is called good_cell and vice versa. 
- - (Thp_good_cell - Thp_poor_cell) > THR_limitation
- - Thp_good_cell > min_THR
--- Thp_poor_cell < minimum_THR_band   
--- Number of free PRB of good_cell <PRB_limitation.
+Criteria:
+1. The hourly data for 24hours has been considered.
+2. The three cells of each sector(L1800 , L2600_1 and L2100) has been considered.
+3.  The unbalanced cases are the ones with below criteria for at least 70% of our hourly data :<br />
+ Thp_good_cell: consider we are going to check throughput balancing between two cells, the ones with better throughput is called good_cell and vice versa. <br />
+ > - (Thp_good_cell - Thp_poor_cell) > THR_limitation<br />
+    *We will select the cells with throughput difference more than THR_limitation.
+THR_limitation is 5.2 and 4.8 for cases to import into the unbalanced report and the ones to be exported from the report, respectively. (to refuse ping pong)*
+ > - Thp_good_cell > min_THR<br />
+  *It is needed to make sure about the good performance of good_cell.<br />*
+  *We consider min_THR =Mbps in our network.*
+ > - Thp_poor_cell < minimum_THR_band   <br />
+  *It is needed to ensure about the poor performance of poor_cell.<br />*
+  *We consider minimum_THR_band =Mbps in our network.*
+ > - PRB Utilization Rate of good_cell <PRB_limitation.<br />
+  *It is needed to  ensure about the free capacity of good_cell.*
+<br /> 
 
- 
- The unbalanced cases are the ones which satisfy below criteria for at least 70% of our hourly data :
-
-(Thp_good_cell - Thp_poor_cell) > THR_limitation
-Thp_good_cell > min_THR
-Thp_poor_cell < minimum_THR_band  
-Number of free PRB of good_cell<PRB_limitation.
-
-(Thp_good_cell - Thp_poor_cell) > THR_limitation
-We will select the cells with throughput difference more than THR_limitation.
-THR_limitation is 5.2 and 4.8 for cases to import into the unbalanced report and the ones to be exported from the report, respectively. (to refuse ping pong)
-
-2. Thp_good_cell > min_THR
-It is needed to make sure about the good performance of good_cell.
-We consider min_THR =12Mbps in our network. 
-
-3. Thp_poor_cell < minimum_THR_band
- It is needed to ensure about the poor performance of poor_cell.
- ‘minimum_THR_band’  of each cell has been selected based on the distribution of all cells in that band per time and province. (for example, the throughput of LN4240XA1 in Tehran has been compared with the throughput of all L1800 cells in Tehran in different hours. Therefore there is a fair limitation for each cell based on  the distribution of its same cells.
- We have considered ‘minimum_THR_band ‘ as ‘percentile(15)’ of mentioned distribution. 
-![image](https://user-images.githubusercontent.com/58902718/193329704-aaaa8012-8447-42fd-b5d2-10fa4a31aa6e.png)
-
-
-
- 
+ ## Python Programme of Project
  To solve the problem, we are going to use python programming, you can find the [scripts]() in this repository and use it with below instructions.<br /> 
  -There are some input excels which are necessary to be in the folder of your python code.<br />
  -Due to security issues just the excel samples have been added as input and you should extend it based on your data in the LTE network.<br />
@@ -120,36 +104,29 @@ We consider min_THR =12Mbps in our network.
 
 ### Different Phases of project:
 
+The python code has been written in different python cells (sections) in bellow main phases:<br />
 
-The python code has been written in different python cells (sections). It’s better to run it cell by cell to check both the MAPS stats for any missing and solve the probability occurred errors.
-•	Run each cell and check the ‘CHECK’ (with capital alphabet) comments and the explanation in front of it. It clarifies in which parts you need to double check the MAPS missing stats or where you should update your email.
-•	If you face error after running each cell, you can use the ‘ERROR’ (with capital alphabet) comment in that cell. It may help you to find the reason of error.
+**Phase 1: Insert data** <br />
+-	Backup: In this part we are taking a backup of previous report output. It may be useful for further investigations.
+-	Reading the input files from FTP: We are using the hourly stats of 4G KPIs for this report as the input, which are downloaded directly from FTP. They are 24 csv files consists of the data of 24 hours of yesterday. you may use your DB in this part.
 
 
-
-Phase 1: Insert data
-•	Backup: In this part we are taking a backup of previous report output. It may be useful for further investigations.
-•	Reading the input files from FTP: We are using the hourly stats of 4G KPIs for this report as the input, which are downloaded directly from FTP. They are 24 csv files consists of the data of 24 hours of yesterday.
-•	Checking the MAPS missing stats: We will import the input files and check the downloaded files to ensure about their completion.
-
-Phase 2: Preprocessing
+**Phase 2: Preprocessing**<br />
 We will do some preprocessing for all data to make them ready for analysis. 
 
-Phase 3: Layer balancing process
-•	Applying the layer balancing criteria and check the cases.
-•	The unbalanced cases are the ones who are unbalance in last three days based on below criteria (for at least 70% of hours in a day):
-	Desired throughput difference to select the unbalance cases is 5.2 Mbps.
-	Desired high PRB utilization rate and throughput of better cell is 50% and 10Mbps, respectively.
-	The hourly Throughput of selected cases is less than 8 Mbps.
+**Phase 3: Layer balancing process**
+-	Applying the layer balancing criteria and check the cases.
+-	The unbalanced cases are the ones who are unbalance in last three days based on above mentioned criteria (for at least 70% of hours in a day):<br />
+	Desired throughput difference to select the unbalance cases is 5.2 Mbps.<br />
+	Desired high PRB utilization rate and throughput of better cell is 50% and 10Mbps, respectively.<br />
+	The hourly Throughput of selected cases is less than 8 Mbps.<br />
 
-•	The close cases are the ones who have improved for last two days based on below criteria:
-	The hourly throughput difference of unbalanced cases has been decreased to less than 4.5Mbps (for at least 50% of hours in a day).
-	The hourly throughput of poor cell (the cell with less throughput) has been improved to more than 9.5Mbps (for at least 80% of hours in a day).
-
-
+-	The close cases are the ones who have improved for last two days based on below criteria:<br />
+	The hourly throughput difference of unbalanced cases has been decreased to less than 4.5Mbps (for at least 50% of hours in a day).<br />
+	The hourly throughput of poor cell (the cell with less throughput) has been improved to more than 9.5Mbps (for at least 80% of hours in a day).<br />
 
 
-Phase 4: Output
-•	Saving the output excel files and plots of layer balancing project.
-•	Sending the automated email of layer balancing report.
+**Phase 4: Output**<br />
+-	Saving the output excel files and plots of layer balancing project.
+
 
