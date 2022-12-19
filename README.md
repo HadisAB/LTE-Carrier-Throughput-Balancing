@@ -77,8 +77,8 @@ THR_limitation is 5000 and 4500 for cases to import into the unbalanced report a
 <br /> 
 
  ## Python Programme of Project
- To solve the problem, we are going to use python programming, you can find the [scripts]() in this repository and use it with below instructions.<br /> 
- -There are some input excels which are necessary to be in the folder of your python code.<br />
+ To solve the problem, we are going to use python programming, you can find the [scripts](https://github.com/HadisAB/LTE-Carrier-Throughput-Balancing/blob/main/Layerbalancing_Git.py) in this repository and use it with below instructions.<br /> 
+ -There are some [input excels](https://github.com/HadisAB/LTE-Carrier-Throughput-Balancing/blob/main/Input_Git.rar) which are necessary to be in the folder of your python code.<br />
  -Due to confidential issues just the excel samples have been added as input and you should extend it based on your data in the LTE network.<br />
  -We are using MAPS system to export LTE KPIs per cells. 
  
