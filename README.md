@@ -65,13 +65,13 @@ Criteria:
  Thp_good_cell: consider we are going to check throughput balancing between two cells, the ones with better throughput is called good_cell and vice versa. <br />
  > - (Thp_good_cell - Thp_poor_cell) > THR_limitation<br />
     *We will select the cells with throughput difference more than THR_limitation.
-THR_limitation is 5.2 and 4.8 for cases to import into the unbalanced report and the ones to be exported from the report, respectively. (to refuse ping pong)*
+THR_limitation is 5000 and 4500 for cases to import into the unbalanced report and the ones to be exported from the report, respectively. (to refuse ping pong)*
  > - Thp_good_cell > min_THR<br />
   *It is needed to make sure about the good performance of good_cell.<br />*
-  *We consider min_THR =Mbps in our network.*
+  *We consider min_THR =10000 Mbps in our network.*
  > - Thp_poor_cell < minimum_THR_band   <br />
   *It is needed to ensure about the poor performance of poor_cell.<br />*
-  *We consider minimum_THR_band =Mbps in our network.*
+  *We consider minimum_THR_band =10000 Mbps in our network.*
  > - PRB Utilization Rate of good_cell <PRB_limitation.<br />
   *It is needed to  ensure about the free capacity of good_cell.*
 <br /> 
@@ -79,28 +79,27 @@ THR_limitation is 5.2 and 4.8 for cases to import into the unbalanced report and
  ## Python Programme of Project
  To solve the problem, we are going to use python programming, you can find the [scripts]() in this repository and use it with below instructions.<br /> 
  -There are some input excels which are necessary to be in the folder of your python code.<br />
- -Due to security issues just the excel samples have been added as input and you should extend it based on your data in the LTE network.<br />
+ -Due to confidential issues just the excel samples have been added as input and you should extend it based on your data in the LTE network.<br />
  -We are using MAPS system to export LTE KPIs per cells. 
  
  #### Inputs: ####
-1.	The csv files with name ‘4GFDD_Cell_4KPI_Hourly’, which consists hourly KPIs in below columns and located in FTP:
+1.	The csv files with name ‘Cell_Hourly’, which consists hourly KPIs in below columns:
 'Time', '4G LTE CELL',   '4G_Throughput_UE_DL_kbps_IR(Kbps)',     '4G_PRB_Util_Rate_PDSCH_Avg_IR(#)'
-2.	The csv files with name ‘CellCFG-4GFDD’, which are in FTP.
-3.	The csv files with name ‘4G_Cell_Daily’, which consists daily ‘cell_avail_man’ KPI and located in FTP.
+2.	The csv files with name ‘CFG-’ for exporting some features.
+3.	The csv files with name ‘Cell_Daily’, which consists daily ‘cell_avail_man’ .
 4.	tracker.xlsx : A tracker consists of the history of Layer_balancing cases.
 5.	unbalanced_cells.xlsx : The list of open cells in previous produced layer_balancing report.
 6.	tracker-closed.xlsx: The list of total closed/parked cells in previous produced layer_balancing report.
 7.	trend.xlsx: The summation of open cases in layer_balancing till now. This is kept to show the trend of total open cases per region per day. 
 8.	trend -new- close.xlsx: The number of new close cases per region per day.. 
-9.	Parked_cells.xlsx: This is a list of total parked cases of layer_balancing report by the approval of MTN OPT engineer. The comment column in this report clarifies the reason of parking. The cases of this list have been added by the approval and comment of MTN OPT engineer. We should keep the email of their approval (and the reason of parking case) as an evidence and fill this list manually (exactly as same as previous cases in list) not automatically.
-10.	atoll_lte_fdd_cells.csv: This is the Atoll stats and is used to fill the 4G cellcfg missings.
-11.	Site Priority OPT list.xlsx: The list of Priority sites to select P1 and P2 cases.
+9.	Parked_cells.xlsx: This is a list of total parked cases of layer_balancing report. 
+10.	CFG_3.csv: This is another cfg fike that is used to fill the 4G cfg missings.
+11.	Site Priority OPT list.xlsx: The list of Priority sites to select P1 and P2 cases (apply another filtering on data).
 
 
 
  #### Outputs: ####
-1.	The parts of 4 to 8 of mentioned inputs, are the outputs, too. In other words, we are using the output of each report as the input of next report.
-2.	‘missed_per_thr.xlsx’ is one output that shows the stats of MAPS per hour and day. It can be checked to find the missing in MAPS. 
+The parts of 4 to 8 of mentioned inputs, are the outputs, too. In other words, we are using the output of each report as the input of next report.
 
 ### Different Phases of project:
 
@@ -108,7 +107,7 @@ The python code has been written in different python cells (sections) in bellow 
 
 **Phase 1: Insert data** <br />
 -	Backup: In this part we are taking a backup of previous report output. It may be useful for further investigations.
--	Reading the input files from FTP: We are using the hourly stats of 4G KPIs for this report as the input, which are downloaded directly from FTP. They are 24 csv files consists of the data of 24 hours of yesterday. you may use your DB in this part.
+-	Reading the input files 
 
 
 **Phase 2: Preprocessing**<br />
@@ -117,13 +116,13 @@ We will do some preprocessing for all data to make them ready for analysis.
 **Phase 3: Layer balancing process**
 -	Applying the layer balancing criteria and check the cases.
 -	The unbalanced cases are the ones who are unbalance in last three days based on above mentioned criteria (for at least 70% of hours in a day):<br />
-	Desired throughput difference to select the unbalance cases is 5.2 Mbps.<br />
+	Desired throughput difference to select the unbalance cases is 5 Mbps.<br />
 	Desired high PRB utilization rate and throughput of better cell is 50% and 10Mbps, respectively.<br />
-	The hourly Throughput of selected cases is less than 8 Mbps.<br />
+	The hourly Throughput of selected cases is less than 10 Mbps.<br />
 
 -	The close cases are the ones who have improved for last two days based on below criteria:<br />
 	The hourly throughput difference of unbalanced cases has been decreased to less than 4.5Mbps (for at least 50% of hours in a day).<br />
-	The hourly throughput of poor cell (the cell with less throughput) has been improved to more than 9.5Mbps (for at least 80% of hours in a day).<br />
+	The hourly throughput of poor cell (the cell with less throughput) has been improved to more than 11.5Mbps (for at least 80% of hours in a day).<br />
 
 
 **Phase 4: Output**<br />
